@@ -26,10 +26,8 @@
             $error[] = 'Los parámetros enviados no son los correctos.';
         }
 
-        $res = '';
-
         if (empty($error)){
-            //Comprobación de valores:
+            //Comprobación de valores si NO hay errores hasta el momento:
             if (!is_numeric($op1)) {
                 $error[] = 'El primer operando no es un número.';
             }
@@ -40,34 +38,16 @@
                 $error[] = 'El operador no es válido.';
             }
         }
-        ?>
-        <form action="" method="get">
-            <label for="op1">Primer operando:</label>
-            <input id="op1" type="text" name="op1" value="<?= $op1 ?>">
-            <br /><br />
-            <label for="op2">Segundo operando:</label>
-            <input id="op2" type="text" name="op2" value="<?= $op2 ?>">
-            <br /><br />
-            <label for="op">Operacion:</label>
-            <select id="op" name="op">
-                <!-- Esto añade tantas opciones como operaciones hay en el array OP -->
-                <?php foreach (OP as $o): ?>
-                     <option value="<?= $o ?>" <?= selected($op,$o) ?>>
-                         <?= $o ?>
-                     </option>
-                <?php endforeach; ?>
-            </select>
-            <br /><br />
-            <input type="submit" value="Calcular" >
-        </form>
-    <?php
+
+    formulario($op1,$op2,$op, OP);
+
     if (empty($error)):
-    comprueba($op1, $op2, $op);
-    else:?>
-    <?php foreach ($error as $err): ?>
+    calcula($op1, $op2, $op);
+    else:
+        foreach ($error as $err): ?>
         <h3>Error: <?= $err ?></h3>
-    <?php endforeach; ?>
-    <?php endif;  ?>
+    <?php endforeach;
+    endif;  ?>
 
     </body>
 </html>
