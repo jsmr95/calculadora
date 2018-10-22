@@ -7,11 +7,40 @@
     <body>
         <?php
         require './auxiliar.php';
+        const OP = ['+', '-', '*', '/'];
+        const PAR = ['op', 'op1', 'op2'];
+        $error = [];
+        $op1 = $op2 = $op = null;
 
-        $op1 = isset($_GET['op1']) ? trim($_GET['op1']) : '0';
-        $op2 = isset($_GET['op2']) ? trim($_GET['op2']) : '0';
-        $op = isset($_GET['op']) ? trim($_GET['op']) : '+';
-         ?>
+        $par = array_keys($_GET);
+        sort($par);
+        if (empty($_GET)) {
+            $op1 = '0';
+            $op2 = '0';
+            $op = '+';
+        } elseif ($par == PAR) {
+            $op1 = trim($_GET['op1']);
+            $op2 = trim($_GET['op2']);
+            $op = trim($_GET['op']);
+        } else {
+            $error[] = 'Los parámetros enviados no son los correctos.';
+        }
+
+        $res = '';
+
+        if (empty($error)){
+            //Comprobación de valores:
+            if (!is_numeric($op1)) {
+                $error[] = 'El primer operando no es un número.';
+            }
+            if (!is_numeric($op2)) {
+                $error[] = 'El segundo operando no es un número.';
+            }
+            if (!in_array($op,OP)) {
+                $error[] = 'El operador no es válido.';
+            }
+        }
+        ?>
         <form action="" method="get">
             <label for="op1">Primer operando:</label>
             <input id="op1" type="text" name="op1" value="<?= $op1 ?>">
@@ -21,30 +50,24 @@
             <br /><br />
             <label for="op">Operacion:</label>
             <select id="op" name="op">
-              <option value="+">+</option>
-              <option value="-">-</option>
-              <option value="*">*</option>
-              <option value="/">/</option>
+                <!-- Esto añade tantas opciones como operaciones hay en el array OP -->
+                <?php foreach (OP as $o): ?>
+                     <option value="<?= $o ?>" <?= selected($op,$o) ?>>
+                         <?= $o ?>
+                     </option>
+                <?php endforeach; ?>
             </select>
             <br /><br />
             <input type="submit" value="Calcular" >
         </form>
-        <?php
-
-        if ($op1 == "" || $op2 == "") {
-            mostrarError('Debe proporcionar los dos operandos correctamente.');
-        } else {
-          if (!is_numeric($op1) || !is_numeric($op2)) {
-            mostrarError('Los operandos deben ser números.');
-        } else {
-          if (!$op == '+' || !$op == '-' || !$op == '*' || !$op == '/') {
-            mostrarError('La operación debe ser: + - * /');
-          } else {
-            comprueba($op1, $op2, $op);
-            }
-          }
-        }
-                ?>
+    <?php
+    if (empty($error)):
+    comprueba($op1, $op2, $op);
+    else:?>
+    <?php foreach ($error as $err): ?>
+        <h3>Error: <?= $err ?></h3>
+    <?php endforeach; ?>
+    <?php endif;  ?>
 
     </body>
 </html>
