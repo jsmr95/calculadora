@@ -11,14 +11,15 @@
         const OP = ['+', '-', '*', '/'];
         const PAR = ['op'=>'+', 'op1'=>'0', 'op2'=>'0'];
         $error = [];
-        $op1 = $op2 = $op = null;
+        //creamos los valores por defecto desde el array PAR (que hemos aprovechado)
+        extract(PAR);
+        // $op1 = $op2 = $op = null;
+        //no hace falta hacer esto ya que extract arriba nos lo evalua a los valores por defecto
+        //y asi no tenemos que preocuparnos en inicializarlo a null.
 
 
-
-        //si nos llega vacio $_GET, aplicamos valores por defecto
+        //ya estan puesto los valores por defecto, pero miramos si está vacio, no hace nada.
         if (empty($_GET)) {
-            //creamos los valores por defecto desde el array PAR (que hemos aprovechado)
-            extract(PAR);
             // $op1 = '0';
             // $op2 = '0';
             // $op = '+';
