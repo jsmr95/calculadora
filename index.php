@@ -9,26 +9,37 @@
         require './auxiliar.php';
         //definimos variables y constantes
         const OP = ['+', '-', '*', '/'];
-        const PAR = ['op', 'op1', 'op2'];
+        const PAR = ['op'=>'+', 'op1'=>'0', 'op2'=>'0'];
         $error = [];
         $op1 = $op2 = $op = null;
 
-        $par = array_keys($_GET);
-        sort($par);
+
+
         //si nos llega vacio $_GET, aplicamos valores por defecto
         if (empty($_GET)) {
-            $op1 = '0';
-            $op2 = '0';
-            $op = '+';
-        //miramos si lo que nos llegar por GET son exclusivamente esos tres.
-        } elseif ($par == PAR) {
-            $op1 = trim($_GET['op1']);
-            $op2 = trim($_GET['op2']);
-            $op = trim($_GET['op']);
+            //creamos los valores por defecto desde el array PAR (que hemos aprovechado)
+            extract(PAR);
+            // $op1 = '0';
+            // $op2 = '0';
+            // $op = '+';
+
+            //Si la difrencia de GET PAR es vacio Y la diferencia de PAR GET es vacio tb es que
+            //no hay nada en GET que no este en PAR
+        } elseif (empty(array_diff_key($_GET, PAR)) && empty(array_diff_key(PAR, $_GET))){
+            //Trimeamos los valores
+            $_GET = array_map('trim', $_GET);
+
+            extract($_GET, EXTR_IF_EXISTS);
+            //HACE LO MISMO QUE ABAJO, CREA LAS VARIABLES
+            //PERO SOLO SI EXISTEN, DEBEN DE EXISTIR
+            // $op1 = trim($_GET['op1']);
+            // $op2 = trim($_GET['op2']);
+            // $op = trim($_GET['op']);
         } else {
-          //Si no llega vacio y llega algo que no es op,op1 y op2, añadimos error.
+            //Si no llega vacio y llega algo que no es op,op1 y op2, añadimos error.
             $error[] = 'Los parámetros enviados no son los correctos.';
         }
+
 
         if (empty($error)){
             //Comprobación de valores si NO hay errores hasta el momento:
@@ -45,9 +56,9 @@
     //mostramos el formulario
     formulario($op1,$op2,$op, OP);
 
-    if (empty($error)): //Miramos si no hay errores, para luego calcular.
-    calcula($op1, $op2, $op);
-    else:
+    if (empty($error)): ?> <!--Miramos si no hay errores, para luego calcular.-->
+        <h3>Resultado: <?= calcula($op1, $op2, $op) ?></h3> <!--Calculamos -->
+    <?php else:
         foreach ($error as $err): ?> <!--Si hay algun error, no se calcula y se muestran los errores -->
         <h3>Error: <?= $err ?></h3>
     <?php endforeach;

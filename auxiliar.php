@@ -21,9 +21,9 @@ function calcula($op1, $op2, $op){
         case '/':
         $res = $op1 / $op2;
         break;
-    } ?>
-    <h3>Resultado: <?= $res ?></h3>
-<?php }
+    }
+    return $res;
+}
 
 //FUNCION para mostrar el formulario
 function formulario($op1, $op2, $op, $ops)
