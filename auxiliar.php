@@ -1,9 +1,11 @@
 <?php
 
+//FUNCION para marcar como selected el option que queramos
 function selected($op1,$op2){
     return $op1 == $op2 ? "selected" : "";
 }
 
+//FUNCION para calcular segun los parametros
 function calcula($op1, $op2, $op){
     $res = '';
     switch ($op) {
@@ -23,6 +25,7 @@ function calcula($op1, $op2, $op){
     <h3>Resultado: <?= $res ?></h3>
 <?php }
 
+//FUNCION para mostrar el formulario
 function formulario($op1, $op2, $op, $ops)
 { ?>
     <form action="" method="get">
