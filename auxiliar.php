@@ -5,6 +5,55 @@ function selected($op1,$op2){
     return $op1 == $op2 ? "selected" : "";
 }
 
+//FUNCION para mostrar el resultado
+function mostrarResultado($op1, $op2, $op)
+{?>
+    <h3>Resultado: <?= calcula($op1, $op2, $op) ?></h3> <!--Calculamos -->
+<?php
+}
+
+//FUNCION para mostrar los errores
+function mostrarErrores(&$error)
+{
+    foreach ($error as $err): ?> <!--Si hay algun error, no se calcula y se muestran los errores -->
+    <h3>Error: <?= $err ?></h3>
+<?php endforeach;
+}
+
+//FUNCION comprueba parametros
+function compruebaParametros($par, &$error){
+    //ya estan puesto los valores por defecto, pero miramos si no está vacio, y extraemos las variables.
+    if (!empty($_GET)) {
+
+        //Si la difrencia de GET PAR es vacio Y la diferencia de PAR GET es vacio tb es que
+        //no hay nada en GET que no este en PAR
+        if (empty(array_diff_key($_GET, PAR)) && empty(array_diff_key(PAR, $_GET))){
+            return array_map('trim', $_GET);
+        } else {
+        //Si no llega vacio y llega algo que no es op,op1 y op2, añadimos error.
+        $error[] = 'Los parámetros enviados no son los correctos.';
+        }
+    }
+    //creamos los valores por defecto desde el array PAR (que hemos aprovechado)
+    //este return sale si el $_GET es vacio
+    return $par;
+}
+
+//COMPRUEBA los valores
+function compruebaValores($op1, $op2, $op, $ops, &$error)
+{
+    if (!is_numeric($op1)) {
+        $error[] = 'El primer operando no es un número.';
+    }
+    if (!is_numeric($op2)) {
+        $error[] = 'El segundo operando no es un número.';
+    }
+    if (!in_array($op, $ops)) {
+        $error[] = 'El operador no es válido.';
+    }
+}
+
+
 //FUNCION para calcular segun los parametros
 function calcula($op1, $op2, $op){
     $res = '';
