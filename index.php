@@ -18,15 +18,15 @@
         //y asi no tenemos que preocuparnos en inicializarlo a null.
 
 
-        //ya estan puesto los valores por defecto, pero miramos si está vacio, no hace nada.
-        if (empty($_GET)) {
+        //ya estan puesto los valores por defecto, pero miramos si no está vacio, y extraemos las variables.
+        if (!empty($_GET)) {
             // $op1 = '0';
             // $op2 = '0';
             // $op = '+';
 
             //Si la difrencia de GET PAR es vacio Y la diferencia de PAR GET es vacio tb es que
             //no hay nada en GET que no este en PAR
-        } elseif (empty(array_diff_key($_GET, PAR)) && empty(array_diff_key(PAR, $_GET))){
+            if (empty(array_diff_key($_GET, PAR)) && empty(array_diff_key(PAR, $_GET))){
             //Trimeamos los valores
             $_GET = array_map('trim', $_GET);
 
@@ -40,7 +40,7 @@
             //Si no llega vacio y llega algo que no es op,op1 y op2, añadimos error.
             $error[] = 'Los parámetros enviados no son los correctos.';
         }
-
+      }
 
         if (empty($error)){
             //Comprobación de valores si NO hay errores hasta el momento:
