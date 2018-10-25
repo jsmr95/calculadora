@@ -6,9 +6,9 @@ function selected($op1,$op2){
 }
 
 //FUNCION para mostrar el resultado
-function mostrarResultado($op1, $op2, $op)
+function mostrarResultado($array)
 {?>
-    <h3>Resultado: <?= calcula($op1, $op2, $op) ?></h3> <!--Calculamos -->
+    <h3>Resultado: <?= calcula($array) ?></h3> <!--Calculamos -->
 <?php
 }
 
@@ -40,8 +40,9 @@ function compruebaParametros($par, &$error){
 }
 
 //COMPRUEBA los valores
-function compruebaValores($op1, $op2, $op, $ops, &$error)
+function compruebaValores($array, $ops, &$error)
 {
+    extract($array);
     if (!is_numeric($op1)) {
         $error[] = 'El primer operando no es un número.';
     }
@@ -55,8 +56,9 @@ function compruebaValores($op1, $op2, $op, $ops, &$error)
 
 
 //FUNCION para calcular segun los parametros
-function calcula($op1, $op2, $op){
+function calcula($array){
     $res = '';
+    extract($array);
     switch ($op) {
         case '+':
         $res = $op1 + $op2;
@@ -75,8 +77,10 @@ function calcula($op1, $op2, $op){
 }
 
 //FUNCION para mostrar el formulario
-function formulario($op1, $op2, $op, $ops)
-{ ?>
+function formulario($array, $ops)
+{
+  extract($array);
+  ?>
     <form action="" method="get">
         <label for="op1">Primer operando:</label>
         <input id="op1" type="text" name="op1" value="<?= $op1 ?>">

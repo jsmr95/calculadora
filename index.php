@@ -14,16 +14,17 @@
 
     //extraemos los parametros previamente comprobados, si no hay en GET, se ponen por defecto.
     extract(compruebaParametros(PAR, $error));
+    $array = compact(array_keys(PAR));
 
     if (empty($error)){
         //Comprobación de valores si NO hay errores hasta el momento:
-        compruebaValores($op1, $op2, $op, OP, $error);
+        compruebaValores($array, OP, $error);
     }
     //mostramos el formulario
-    formulario($op1,$op2,$op, OP);
+    formulario($array, OP);
 
     if (empty($error)){  //Miramos si no hay errores, para luego calcular.
-        mostrarResultado($op1, $op2, $op);
+        mostrarResultado($array);
     } else {
         mostrarErrores($error);
     }?>
