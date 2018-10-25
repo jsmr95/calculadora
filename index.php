@@ -12,6 +12,25 @@
     const PAR = ['op'=>'+', 'op1'=>'0', 'op2'=>'0'];
     $error = [];
 
+
+    function exception_error_handler($severidad, $mensaje, $fichero, $línea) {
+        if (!(error_reporting() & $severidad)) {
+        // Este código de error no está incluido en error_reporting
+        return;
+        }
+    throw new ErrorException($mensaje, 0, $severidad, $fichero, $línea);
+    }
+    set_error_handler("exception_error_handler");
+
+
+    try {
+        echo 1 % 0;
+    } catch (ErrorException $e) {
+        echo $e->getMessage();
+        die();
+    }
+
+
     //extraemos los parametros previamente comprobados, si no hay en GET, se ponen por defecto.
     extract(compruebaParametros(PAR, $error));
     $array = compact(array_keys(PAR));
