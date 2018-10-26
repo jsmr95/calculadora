@@ -12,6 +12,13 @@ function mostrarResultado($array)
 <?php
 }
 
+//FUNCION para lanzar Excepciones
+function compruebaErrores($error){
+  if (!empty($error)){
+    throw new Exception();
+  }
+}
+
 //FUNCION para mostrar los errores
 function mostrarErrores(&$error)
 {
@@ -42,6 +49,7 @@ function compruebaParametros($par, &$error){
 //COMPRUEBA los valores
 function compruebaValores($array, $ops, &$error)
 {
+  if (empty($error)) {
     extract($array);
     if (!is_numeric($op1)) {
         $error[] = 'El primer operando no es un número.';
@@ -52,8 +60,9 @@ function compruebaValores($array, $ops, &$error)
     if (!in_array($op, $ops)) {
         $error[] = 'El operador no es válido.';
     }
+  }
+  compruebaErrores($error);
 }
-
 
 //FUNCION para calcular segun los parametros
 function calcula($array){
